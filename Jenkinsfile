@@ -74,7 +74,6 @@ pipeline {
         }
       }
     }
-
     stage('Build') {
       parallel {
         stage ('Linux') {
@@ -180,10 +179,9 @@ pipeline {
           expression { params.Coverage }  // by request
           allOf {
             expression { env.CHANGE_ID != null }
-            expression { GIT_COMMIT == GIT_PREVIOUS_COMMIT } // on the open PR
+            expression { GIT_PREVIOUS_COMMIT == null } // on the open PR
           }
           allOf {
-            expression { return ! params.BindingsOnly }
             expression { params.BUILD_TYPE == 'Debug' }
             expression { GIT_LOCAL_BRANCH ==~ /master/ }
           }
@@ -219,7 +217,6 @@ pipeline {
     stage('Tests') {
       when {
         allOf {
-          expression { return !params.BindingsOnly }
           expression { return params.BUILD_TYPE == "Debug"}
         }
       }
@@ -284,10 +281,9 @@ pipeline {
           expression { params.Coverage }  // by request
           allOf {
             expression { env.CHANGE_ID != null }
-            expression { GIT_COMMIT == GIT_PREVIOUS_COMMIT } // on the open PR
+            expression { GIT_PREVIOUS_COMMIT == null } // on the open PR
           }
           allOf {
-            expression { return ! params.BindingsOnly }
             expression { params.BUILD_TYPE == 'Debug' }
             expression { GIT_LOCAL_BRANCH ==~ /master/ }
           }
@@ -497,10 +493,10 @@ pipeline {
   post {
      // TODO: send email-notifications logic 
     always {
-      emailext( subject: '$DEFAULT_SUBJECT',
-                body: '$DEFAULT_CONTENT',
-                to: '$GIT_AUTHOR_EMAIL'
-      )
+      // emailext( subject: '$DEFAULT_SUBJECT',
+      //           body: '$DEFAULT_CONTENT',
+      //           to: '$GIT_AUTHOR_EMAIL'
+      // )
       // clear workspace on agents and 
       script {
         if ( params.Linux ) {
