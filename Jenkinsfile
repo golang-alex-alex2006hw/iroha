@@ -36,8 +36,6 @@ properties([parameters([
   choice(choices: 'arm64-v8a\narmeabi-v7a\narmeabi\nx86_64\nx86', description: 'Android Bindings Platform', name: 'ABPlatform'),
   string(defaultValue: '4', description: 'How much parallelism should we exploit. "4" is optimal for machines with modest amount of memory and at least 4 cores', name: 'PARALLELISM')])])
 
-def branch_coverage = ['master']
-
 pipeline {
   environment {
     CCACHE_DIR = '/opt/.ccache'

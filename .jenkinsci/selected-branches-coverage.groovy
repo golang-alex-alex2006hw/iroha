@@ -2,6 +2,8 @@
 
 def selectedBranchesCoverage() {
 	// trigger coverage if branch is either develop or master, or it is a PR
+	def branch_coverage = ['master']
+	
 	if ( params.Coverage ) {
 		return true
 	}
