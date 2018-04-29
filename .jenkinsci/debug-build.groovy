@@ -11,8 +11,8 @@ def doDebugBuild(coverageEnabled=false) {
   // this is the case for the FIRST build only.
   // So just set this to same value as default. 
   // This is a known bug. See https://issues.jenkins-ci.org/browse/JENKINS-41929
-  if (!parallelism) {
-    parallelism = 4
+  if (parallelism == null) {
+    parallelism = 8
   }
   if (env.NODE_NAME.contains('arm7')) {
     parallelism = 1
@@ -25,9 +25,9 @@ def doDebugBuild(coverageEnabled=false) {
                                            ['PARALLELISM': parallelism])
 
   if (GIT_LOCAL_BRANCH == 'develop' && manifest.manifestSupportEnabled()) {
-    manifest.manifestCreate("${DOCKER_REGISTRY_BASENAME}:develop-build", 
-      ["${DOCKER_REGISTRY_BASENAME}:x86_64-develop-build", 
-       "${DOCKER_REGISTRY_BASENAME}:armv7l-develop-build", 
+    manifest.manifestCreate("${DOCKER_REGISTRY_BASENAME}:develop-build",
+      ["${DOCKER_REGISTRY_BASENAME}:x86_64-develop-build",
+       "${DOCKER_REGISTRY_BASENAME}:armv7l-develop-build",
        "${DOCKER_REGISTRY_BASENAME}:aarch64-develop-build"])
     manifest.manifestAnnotate("${DOCKER_REGISTRY_BASENAME}:develop-build",
       [
