@@ -98,14 +98,6 @@ pipeline {
               }
             }
           }
-          post {
-            always {
-              script {
-                def post = load ".jenkinsci/linux-post-step.groovy"
-                post.linuxPostStep()
-              }
-            }
-          }
         }
         stage('ARMv7') {
           when {
@@ -128,14 +120,6 @@ pipeline {
               else {
                 def releaseBuild = load ".jenkinsci/release-steps.groovy"
                 releaseBuild.doReleaseBuild()
-              }
-            }
-          }
-          post {
-            always {
-              script {
-                def post = load ".jenkinsci/linux-post-step.groovy"
-                post.linuxPostStep()
               }
             }
           }
@@ -164,14 +148,6 @@ pipeline {
               }
             }
           }
-          post {
-            always {
-              script {
-                def post = load ".jenkinsci/linux-post-step.groovy"
-                post.linuxPostStep()
-              }
-            }
-          }
         }
         stage('MacOS'){
           when {
@@ -194,14 +170,6 @@ pipeline {
               else {
                 def releaseBuild = load ".jenkinsci/mac-release-build.groovy"
                 releaseBuild.doReleaseBuild()
-              }
-            }
-          }
-          post {
-            always {
-              script {
-                def post = load ".jenkinsci/linux-post-step.groovy"
-                post.macPostStep()
               }
             }
           }
@@ -357,6 +325,7 @@ pipeline {
           }
         }
         stage('sonarqube') {
+          // when 
           steps {
             script {
               def cov_platform = ''
@@ -517,7 +486,7 @@ pipeline {
                   }
                   finally {
                     sh "rm -rf /tmp/${env.GIT_COMMIT}"
-                    cleanWs()
+                    // cleanWs()
                   }
                 }
               }
@@ -528,13 +497,39 @@ pipeline {
     }
   }
   post {
-     // TODO: send email-notifications
+     // TODO: send email-notifications logic 
     always {
-      //if (env.CHANGE_ID == null)
       emailext( subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
                 to: '$GIT_AUTHOR_EMAIL'
       )
+      // clear workspace on agents and 
+      script {
+        if ( params.Linux ) {
+          node ('x86_64_aws_test') {
+            def post = load ".jenkinsci/linux-post-step.groovy"
+            post.linuxPostStep()
+          }
+        }
+        if ( params.ARMv8 ) {
+          node ('armv8') {
+            def post = load ".jenkinsci/linux-post-step.groovy"
+            post.linuxPostStep()
+          }
+        }
+        if ( params.ARMv7 ) {
+          node ('armv7') {
+            def post = load ".jenkinsci/linux-post-step.groovy"
+            post.linuxPostStep()
+          }
+        }
+        if ( params.MacOS ) {
+          node ('mac') {
+            def post = load ".jenkinsci/linux-post-step.groovy"
+            post.linuxPostStep()
+          }
+        }
+      }
     }
   }
 }
