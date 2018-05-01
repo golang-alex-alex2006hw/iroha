@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 def doDebugBuild(coverageEnabled=false) {
   def parallelism = params.PARALLELISM
   if (parallelism == null) {

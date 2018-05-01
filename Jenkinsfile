@@ -108,12 +108,7 @@ pipeline {
               if (params.BUILD_TYPE == 'Debug') {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
-                if (!params.Linux && !params.ARMv8 && !params.MacOS ) {
-                  debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
-                }
-                else {
-                  debugBuild.doDebugBuild()
-                }
+                debugBuild.doDebugBuild( (!params.Linux && !params.MacOS && !params.ARMv8) ? coverage.selectedBranchesCoverage() : false )
               }
               else {
                 def releaseBuild = load ".jenkinsci/release-build.groovy"
@@ -133,12 +128,7 @@ pipeline {
               if (params.BUILD_TYPE == 'Debug') {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
-                if (!params.Linux && !params.MacOS ) {
-                  debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
-                }
-                else {
-                  debugBuild.doDebugBuild()
-                }
+                debugBuild.doDebugBuild( (!params.Linux && !params.MacOS) ? coverage.selectedBranchesCoverage() : false )
               }
               else {
                 def releaseBuild = load ".jenkinsci/release-build.groovy"
@@ -155,15 +145,10 @@ pipeline {
           agent { label 'mac' }
           steps {
             script {
-              def debugBuild = load ".jenkinsci/mac-debug-build.groovy"
-              def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
               if (params.BUILD_TYPE == 'Debug') {
-                if ( !params.Linux ) {
-                  debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
-                }
-                else {
-                  debugBuild.doDebugBuild()
-                }
+                def debugBuild = load ".jenkinsci/mac-debug-build.groovy"
+                def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
+                debugBuild.doDebugBuild( params.Linux ? coverage.selectedBranchesCoverage() : false )
               }
               else {
                 def releaseBuild = load ".jenkinsci/mac-release-build.groovy"
