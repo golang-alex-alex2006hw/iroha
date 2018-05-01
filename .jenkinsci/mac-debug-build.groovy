@@ -1,4 +1,8 @@
 def doDebugBuild(coverageEnabled=false) {
+  def parallelism = params.PARALLELISM
+  if (parallelism == null) {
+    parallelism = 4
+  }
   def cmakeOptions = ""
   if ( coverageEnabled ) {
     cmakeOptions = " -DCOVERAGE=ON "

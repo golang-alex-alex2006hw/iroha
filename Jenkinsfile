@@ -24,6 +24,7 @@ properties([parameters([
   booleanParam(defaultValue: false, description: '', name: 'ARMv8'),
   booleanParam(defaultValue: true, description: '', name: 'MacOS'),
   booleanParam(defaultValue: false, description: 'Whether it is a triggered build', name: 'Nightly'),
+  booleanParam(defaultValue: false, description: 'Whether to force building coverage', name: 'Coverage'),
   booleanParam(defaultValue: false, description: 'Whether build docs or not', name: 'Doxygen'),
   booleanParam(defaultValue: false, description: 'Whether build Java bindings', name: 'JavaBindings'),
   choice(choices: 'Release\nDebug', description: 'Java Bindings Build Type', name: 'JBBuildType'),
