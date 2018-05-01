@@ -155,9 +155,9 @@ pipeline {
           agent { label 'mac' }
           steps {
             script {
+              def debugBuild = load ".jenkinsci/mac-debug-build.groovy"
+              def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
               if (params.BUILD_TYPE == 'Debug') {
-                def debugBuild = load ".jenkinsci/mac-debug-build.groovy"
-                def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
                 if ( !params.Linux ) {
                   debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
                 }
