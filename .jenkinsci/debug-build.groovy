@@ -70,7 +70,7 @@ def doDebugBuild(coverageEnabled=false) {
         ccache --show-stats
         ccache --zero-stats
         ccache --max-size=5G
-      """  
+      """
       sh """
         cmake \
           -DTESTING=ON \
