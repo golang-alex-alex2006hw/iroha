@@ -19,7 +19,7 @@
 
 properties([parameters([
   choice(choices: 'Debug\nRelease', description: '', name: 'BUILD_TYPE'),
-  booleanParam(defaultValue: true, description: '', name: 'Linux'),
+  booleanParam(defaultValue: false, description: '', name: 'Linux'),
   booleanParam(defaultValue: false, description: '', name: 'ARMv7'),
   booleanParam(defaultValue: false, description: '', name: 'ARMv8'),
   booleanParam(defaultValue: true, description: '', name: 'MacOS'),
