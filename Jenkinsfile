@@ -88,7 +88,7 @@ pipeline {
               if (params.BUILD_TYPE == 'Debug') {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
-                debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
+                //debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
               }
               else {
                 def releaseBuild = load ".jenkinsci/release-build.groovy"
@@ -216,7 +216,7 @@ pipeline {
           steps {
             script {
               def tests = load ".jenkinsci/debug-build.groovy"
-              tests.doTestStep()  //TODO: pass tests list
+              //tests.doTestStep()  //TODO: pass tests list
             }
           }
         }
@@ -373,6 +373,7 @@ pipeline {
         }
         stage('Build docs') {
           when {
+            beforeAgent true
             allOf {
               expression { return params.Doxygen }
               expression { GIT_LOCAL_BRANCH ==~ /(master|develop)/ }
@@ -393,6 +394,7 @@ pipeline {
         }
         stage('Build bindings') {
           when {
+            beforeAgent true
             anyOf {
               expression { return params.PythonBindings }
               expression { return params.JavaBindings }
@@ -481,7 +483,7 @@ pipeline {
     always {
       emailext( subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
-                to: '$GIT_AUTHOR_EMAIL, iroha-maintainers@soramitsu.co.jp'
+                to: '$GIT_COMMITTER_EMAIL'
       )
       // clear workspace on agents and 
       script {
