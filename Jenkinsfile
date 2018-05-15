@@ -19,10 +19,10 @@
 
 properties([parameters([
   choice(choices: 'Debug\nRelease', description: '', name: 'BUILD_TYPE'),
-  booleanParam(defaultValue: false, description: '', name: 'Linux'),
+  booleanParam(defaultValue: true, description: '', name: 'Linux'),
   booleanParam(defaultValue: false, description: '', name: 'ARMv7'),
   booleanParam(defaultValue: false, description: '', name: 'ARMv8'),
-  booleanParam(defaultValue: true, description: '', name: 'MacOS'),
+  booleanParam(defaultValue: false, description: '', name: 'MacOS'),
   booleanParam(defaultValue: false, description: 'Whether it is a triggered build', name: 'Nightly'),
   booleanParam(defaultValue: false, description: 'Whether to force building coverage', name: 'Coverage'),
   booleanParam(defaultValue: false, description: 'Whether build docs or not', name: 'Doxygen'),
@@ -148,12 +148,7 @@ pipeline {
               if (params.BUILD_TYPE == 'Debug') {
                 def debugBuild = load ".jenkinsci/mac-debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
-                try {
-                  debugBuild.doDebugBuild( !params.Linux ? coverage.selectedBranchesCoverage() : false )
-                }
-                finally {
-                  println ("it did not help")
-                }
+                debugBuild.doDebugBuild( !params.Linux ? coverage.selectedBranchesCoverage() : false )
               }
               else {
                 def releaseBuild = load ".jenkinsci/mac-release-build.groovy"
@@ -484,10 +479,10 @@ pipeline {
   post {
      // TODO: send email-notifications logic 
     always {
-      // emailext( subject: '$DEFAULT_SUBJECT',
-      //           body: '$DEFAULT_CONTENT',
-      //           to: '$GIT_AUTHOR_EMAIL'
-      // )
+      emailext( subject: '$DEFAULT_SUBJECT',
+                body: '$DEFAULT_CONTENT',
+                to: '$GIT_AUTHOR_EMAIL', iroha-maintainers@soramitsu.co.jp
+      )
       // clear workspace on agents and 
       script {
         if ( params.Linux ) {
