@@ -483,7 +483,7 @@ pipeline {
     always {
       emailext( subject: '$DEFAULT_SUBJECT',
                 body: '$DEFAULT_CONTENT',
-                to: "${GIT_AUTHOR_EMAIL}, ${env.GIT_AUTHOR_EMAIL}"
+                to: "${env.GIT_AUTHOR_EMAIL}"
       )
       // clear workspace on agents and 
       script {
