@@ -20,5 +20,4 @@ add_library(shared_model_stateless_validation
 target_link_libraries(shared_model_stateless_validation
         schema
         shared_model_interfaces
-        ${Boost_REGEX_LIBRARY}
         )

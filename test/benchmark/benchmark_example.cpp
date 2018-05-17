@@ -26,34 +26,20 @@
 ///
 
 #include <benchmark/benchmark.h>
-#include <builders/default_builders.hpp>
 #include <string>
-
-#include "builders/protobuf/transaction.hpp"
-#include "validators/default_validator.hpp"
-#include "cryptography/crypto_provider/crypto_defaults.hpp"
 
 /// Test how long is empty std::string creation
 // define a static function, which accepts 'state'
 // function's name = benchmark's name
-static void BM_FieldValidator(benchmark::State &state) {
-  const shared_model::crypto::Keypair keypair =
-      shared_model::crypto::DefaultCryptoAlgorithmType::generateKeypair();
-
-  shared_model::proto::TransactionBuilder builder;
-
-  auto tx = builder.creatorAccountId("hello@test")
-                .createdTime(iroha::time::now())
-                .addAssetQuantity("hello@test", "us#dollar", "2.50")
-                .build().signAndAddSignature(keypair);
+static void BM_StringCreation(benchmark::State &state) {
   // define main benchmark loop
   while (state.KeepRunning()) {
-    auto answer =
-        shared_model::validation::DefaultTransactionValidator().validate(tx);
+    // define the code to be tested
+    std::string empty_string;
   }
 }
 // define benchmark
-BENCHMARK(BM_FieldValidator);
+BENCHMARK(BM_StringCreation);
 
 /// That's all. More in documentation.
 

@@ -51,15 +51,15 @@ namespace shared_model {
     const size_t FieldValidator::value_size = 4 * 1024 * 1024;
     const size_t FieldValidator::description_size = 64;
 
-    const boost::regex FieldValidator::account_name_regex_(account_name_pattern_);
-    const boost::regex FieldValidator::asset_name_regex_(asset_name_pattern_);
-    const boost::regex FieldValidator::domain_regex_(domain_pattern_);
-    const boost::regex FieldValidator::ip_v4_regex_(ip_v4_pattern_);
-    const boost::regex FieldValidator::peer_address_regex_(peer_address_pattern_);
-    const boost::regex FieldValidator::account_id_regex_(account_id_pattern_);
-    const boost::regex FieldValidator::asset_id_regex_(asset_id_pattern_);
-    const boost::regex FieldValidator::detail_key_regex_(detail_key_pattern_);
-    const boost::regex FieldValidator::role_id_regex_(role_id_pattern_);
+    const std::regex FieldValidator::account_name_regex_(account_name_pattern_);
+    const std::regex FieldValidator::asset_name_regex_(asset_name_pattern_);
+    const std::regex FieldValidator::domain_regex_(domain_pattern_);
+    const std::regex FieldValidator::ip_v4_regex_(ip_v4_pattern_);
+    const std::regex FieldValidator::peer_address_regex_(peer_address_pattern_);
+    const std::regex FieldValidator::account_id_regex_(account_id_pattern_);
+    const std::regex FieldValidator::asset_id_regex_(asset_id_pattern_);
+    const std::regex FieldValidator::detail_key_regex_(detail_key_pattern_);
+    const std::regex FieldValidator::role_id_regex_(role_id_pattern_);
 
     FieldValidator::FieldValidator(time_t future_gap)
         : future_gap_(future_gap) {}
@@ -67,7 +67,7 @@ namespace shared_model {
     void FieldValidator::validateAccountId(
         ReasonsGroupType &reason,
         const interface::types::AccountIdType &account_id) const {
-      if (not boost::regex_match(account_id, account_id_regex_)) {
+      if (not std::regex_match(account_id, account_id_regex_)) {
         auto message =
             (boost::format("Wrongly formed account_id, passed value: '%s'. "
                            "Field should match regex '%s'")
@@ -80,7 +80,7 @@ namespace shared_model {
     void FieldValidator::validateAssetId(
         ReasonsGroupType &reason,
         const interface::types::AssetIdType &asset_id) const {
-      if (not boost::regex_match(asset_id, asset_id_regex_)) {
+      if (not std::regex_match(asset_id, asset_id_regex_)) {
         auto message = (boost::format("Wrongly formed asset_id, passed value: "
                                       "'%s'. Field should match regex '%s'")
                         % asset_id % asset_id_pattern_)
@@ -121,7 +121,7 @@ namespace shared_model {
     void FieldValidator::validatePeerAddress(
         ReasonsGroupType &reason,
         const interface::types::AddressType &address) const {
-      if (not boost::regex_match(address, peer_address_regex_)) {
+      if (not std::regex_match(address, peer_address_regex_)) {
         auto message =
             (boost::format("Wrongly formed peer address, passed value: '%s'. "
                            "Field should have valid IPv4 format or be a valid "
@@ -135,7 +135,7 @@ namespace shared_model {
     void FieldValidator::validateRoleId(
         ReasonsGroupType &reason,
         const interface::types::RoleIdType &role_id) const {
-      if (not boost::regex_match(role_id, role_id_regex_)) {
+      if (not std::regex_match(role_id, role_id_regex_)) {
         auto message = (boost::format("Wrongly formed role_id, passed value: "
                                       "'%s'. Field should match regex '%s'")
                         % role_id % role_id_pattern_)
@@ -147,7 +147,7 @@ namespace shared_model {
     void FieldValidator::validateAccountName(
         ReasonsGroupType &reason,
         const interface::types::AccountNameType &account_name) const {
-      if (not boost::regex_match(account_name, account_name_regex_)) {
+      if (not std::regex_match(account_name, account_name_regex_)) {
         auto message =
             (boost::format("Wrongly formed account_name, passed value: '%s'. "
                            "Field should match regex '%s'")
@@ -160,7 +160,7 @@ namespace shared_model {
     void FieldValidator::validateDomainId(
         ReasonsGroupType &reason,
         const interface::types::DomainIdType &domain_id) const {
-      if (not boost::regex_match(domain_id, domain_regex_)) {
+      if (not std::regex_match(domain_id, domain_regex_)) {
         auto message = (boost::format("Wrongly formed domain_id, passed value: "
                                       "'%s'. Field should match regex '%s'")
                         % domain_id % domain_pattern_)
@@ -172,7 +172,7 @@ namespace shared_model {
     void FieldValidator::validateAssetName(
         ReasonsGroupType &reason,
         const interface::types::AssetNameType &asset_name) const {
-      if (not boost::regex_match(asset_name, asset_name_regex_)) {
+      if (not std::regex_match(asset_name, asset_name_regex_)) {
         auto message =
             (boost::format("Wrongly formed asset_name, passed value: '%s'. "
                            "Field should match regex '%s'")
@@ -185,7 +185,7 @@ namespace shared_model {
     void FieldValidator::validateAccountDetailKey(
         ReasonsGroupType &reason,
         const interface::types::AccountDetailKeyType &key) const {
-      if (not boost::regex_match(key, detail_key_regex_)) {
+      if (not std::regex_match(key, detail_key_regex_)) {
         auto message = (boost::format("Wrongly formed key, passed value: '%s'. "
                                       "Field should match regex '%s'")
                         % key % detail_key_pattern_)
@@ -248,7 +248,7 @@ namespace shared_model {
     void FieldValidator::validateCreatorAccountId(
         ReasonsGroupType &reason,
         const interface::types::AccountIdType &account_id) const {
-      if (not boost::regex_match(account_id, account_id_regex_)) {
+      if (not std::regex_match(account_id, account_id_regex_)) {
         auto message =
             (boost::format("Wrongly formed creator_account_id, passed value: "
                            "'%s'. Field should match regex '%s'")
