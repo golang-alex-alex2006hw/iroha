@@ -20,6 +20,8 @@
 
 #include <regex>
 
+#include <boost/regex.hpp>
+
 #include "datetime/time.hpp"
 #include "interfaces/base/signable.hpp"
 #include "interfaces/commands/command.hpp"
@@ -148,15 +150,15 @@ namespace shared_model {
       const static std::string detail_key_pattern_;
       const static std::string role_id_pattern_;
 
-      std::regex account_name_regex_;
-      std::regex asset_name_regex_;
-      std::regex domain_regex_;
-      std::regex ip_v4_regex_;
-      std::regex peer_address_regex_;
-      std::regex account_id_regex_;
-      std::regex asset_id_regex_;
-      std::regex detail_key_regex_;
-      std::regex role_id_regex_;
+      const static boost::regex account_name_regex_;
+      const static boost::regex asset_name_regex_;
+      const static boost::regex domain_regex_;
+      const static boost::regex ip_v4_regex_;
+      const static boost::regex peer_address_regex_;
+      const static boost::regex account_id_regex_;
+      const static boost::regex asset_id_regex_;
+      const static boost::regex detail_key_regex_;
+      const static boost::regex role_id_regex_;
 
       // gap for future transactions
       time_t future_gap_;

@@ -71,6 +71,7 @@ find_package(Boost 1.65.0 REQUIRED
     COMPONENTS
     filesystem
     system
+    regex
     )
 add_library(boost INTERFACE IMPORTED)
 set_target_properties(boost PROPERTIES

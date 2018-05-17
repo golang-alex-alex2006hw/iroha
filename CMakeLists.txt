@@ -47,7 +47,7 @@ endif()
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
-option(BENCHMARKING "Build benchmarks"               OFF)
+option(BENCHMARKING "Build benchmarks"               ON)
 option(TESTING      "Build tests"                    ON )
 option(COVERAGE     "Enable coverage"                OFF)
 option(FUZZING      "Build fuzzing binaries"         OFF)
