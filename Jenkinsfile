@@ -89,8 +89,7 @@ pipeline {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
                 //debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
-                GIT_EMAIL = sh(script: "git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
-                sh "git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}"
+                GIT_EMAIL = sh(script: 'git --no-pager show -s --format="%ae" ${env.GIT_COMMIT}', returnStdout: true)
                 sh "echo ${env.GIT_EMAIL}"
               }
               else {
