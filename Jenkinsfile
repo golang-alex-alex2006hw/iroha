@@ -186,7 +186,7 @@ pipeline {
                   -DTESTING=ON \
                   -H. \
                   -Bbuild \
-                  -DCMAKE_BUILD_TYPE=${params.BUILD_TYPE} \
+                  -DCMAKE_BUILD_TYPE=${params.build_type} \
                   -DIROHA_VERSION=${env.IROHA_VERSION} \
                   ${cmakeOptions}
               """
@@ -259,7 +259,7 @@ pipeline {
     }
     stage('Build Release') {
       when {
-        expression { params.BUILD_TYPE == 'Release' }
+        expression { params.build_type == 'Release' }
         expression { return params.iroha }
       }
       parallel {
