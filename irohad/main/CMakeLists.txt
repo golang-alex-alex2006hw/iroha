@@ -27,6 +27,7 @@ target_link_libraries(server_runner
 add_library(raw_block_loader impl/raw_block_loader.cpp)
 target_link_libraries(raw_block_loader
     shared_model_interfaces
+    shared_model_proto_backend
     )
 
 add_library(application
