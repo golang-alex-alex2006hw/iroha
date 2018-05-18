@@ -82,7 +82,7 @@ pipeline {
             beforeAgent true
             expression { return params.Linux }
           }
-          agent { label 'x86_64' }
+          agent { label 'x86_64_aws_build' }
           steps {
             script {
               if (params.BUILD_TYPE == 'Debug') {
@@ -216,7 +216,7 @@ pipeline {
           steps {
             script {
               def tests = load ".jenkinsci/debug-build.groovy"
-              // tests.doTestStep()  //TODO: pass tests list
+              tests.doTestStep()  //TODO: pass tests list
             }
           }
         }
