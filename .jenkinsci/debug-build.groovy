@@ -28,7 +28,7 @@ def doDebugBuild(coverageEnabled=false) {
                                            "${env.GIT_RAW_BASE_URL}/${previousCommit}/docker/develop/Dockerfile",
                                            "${env.GIT_RAW_BASE_URL}/develop/docker/develop/Dockerfile",
                                            ['PARALLELISM': parallelism])
-
+  dockerAgentImage = iC.imageName()
   if (GIT_LOCAL_BRANCH == 'develop' && manifest.manifestSupportEnabled()) {
     manifest.manifestCreate("${DOCKER_REGISTRY_BASENAME}:develop-build",
       ["${DOCKER_REGISTRY_BASENAME}:x86_64-develop-build",
@@ -88,7 +88,7 @@ def doPreCoverageStep() {
   if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
-  def iC = docker.image("${dockerAgentDockerImage}")
+  def iC = docker.image("${dockerAgentImage}")
   iC.inside(""
   + " -v ${CCACHE_DIR}:${CCACHE_DIR}") {
     sh "cmake --build build --target coverage.init.info"
@@ -99,7 +99,7 @@ def doTestStep() {
   if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
-  def iC = docker.image("${dockerAgentDockerImage}")
+  def iC = docker.image("${dockerAgentImage}")
   sh "docker network create ${env.IROHA_NETWORK}"
 
   docker.image('postgres:9.5').withRun(""
@@ -127,7 +127,7 @@ def doPostCoverageCoberturaStep() {
   if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
-  def iC = docker.image("${dockerAgentDockerImage}")
+  def iC = docker.image("${dockerAgentImage}")
 
   iC.inside(""
   + " -v ${CCACHE_DIR}:${CCACHE_DIR}") {
@@ -141,7 +141,7 @@ def doPostCoverageSonarStep() {
   if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
-  def iC = docker.image("${dockerAgentDockerImage}")
+  def iC = docker.image("${dockerAgentImage}")
 
   iC.inside(""
   + " -v ${CCACHE_DIR}:${CCACHE_DIR}") {

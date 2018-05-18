@@ -53,7 +53,7 @@ pipeline {
     IROHA_POSTGRES_PASSWORD = "${GIT_COMMIT}"
     IROHA_POSTGRES_PORT = 5432
 
-    dockerAgentDockerImage = ''
+    dockerAgentImage = ''
     dockerImageFile = ''
     workspace_path = ''
   }
