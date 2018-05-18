@@ -17,13 +17,12 @@ def doDebugBuild(coverageEnabled=false) {
   if (env.NODE_NAME.contains('arm7')) {
     parallelism = 1
   }
-  if ( env.NODE_NAME ==~ /^x86_64.+/ ) {
+  if ( env.NODE_NAME.contains('x86_64')) {
     parallelism = 8
-  }
-  // count docker image file in case there could be pre-build image saved in file
-  if ( env.NODE_NAME ==~ /^x86_64.+/ ) {
     dockerImageFile = sh(script: "echo ${GIT_LOCAL_BRANCH} | md5sum | cut -c 1-8", returnStdout: true).trim()
   }
+  // count docker image file in case there could be pre-build image saved in file
+
   def iC = dPullOrBuild.dockerPullOrUpdate("${platform}-develop-build",
                                            "${env.GIT_RAW_BASE_URL}/${env.GIT_COMMIT}/docker/develop/Dockerfile",
                                            "${env.GIT_RAW_BASE_URL}/${previousCommit}/docker/develop/Dockerfile",
@@ -48,19 +47,16 @@ def doDebugBuild(coverageEnabled=false) {
       manifest.manifestPush("${DOCKER_REGISTRY_BASENAME}:develop-build", login, password)
     }
   }
-  docker.image('postgres:9.5').withRun(""
-    + " -e POSTGRES_USER=${env.IROHA_POSTGRES_USER}"
-    + " -e POSTGRES_PASSWORD=${env.IROHA_POSTGRES_PASSWORD}"
-    + " --name ${env.IROHA_POSTGRES_HOST}"
-    + " --network=${env.IROHA_NETWORK}") {
-      iC.inside(""
-      + " -e IROHA_POSTGRES_HOST=${env.IROHA_POSTGRES_HOST}"
-      + " -e IROHA_POSTGRES_PORT=${env.IROHA_POSTGRES_PORT}"
-      + " -e IROHA_POSTGRES_USER=${env.IROHA_POSTGRES_USER}"
-      + " -e IROHA_POSTGRES_PASSWORD=${env.IROHA_POSTGRES_PASSWORD}"
-      + " -v ${CCACHE_DIR}:${CCACHE_DIR}") {
+
+  iC.inside(""
+  + " -e IROHA_POSTGRES_HOST=${env.IROHA_POSTGRES_HOST}"
+  + " -e IROHA_POSTGRES_PORT=${env.IROHA_POSTGRES_PORT}"
+  + " -e IROHA_POSTGRES_USER=${env.IROHA_POSTGRES_USER}"
+  + " -e IROHA_POSTGRES_PASSWORD=${env.IROHA_POSTGRES_PASSWORD}"
+  + " -v ${CCACHE_DIR}:${CCACHE_DIR}") {
         def scmVars = checkout scm
         def cmakeOptions = ""
+
         if ( coverageEnabled ) {
           cmakeOptions = " -DCOVERAGE=ON "
         }
@@ -90,7 +86,7 @@ def doDebugBuild(coverageEnabled=false) {
 }
 
 def doPreCoverageStep() {
-  if ( env.NODE_NAME ==~ /^x86_64.+/ ) {
+  if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
   def iC = docker.image("${dockerAgentDockerImage}")
@@ -101,7 +97,7 @@ def doPreCoverageStep() {
 }
 
 def doTestStep() {
-  if ( env.NODE_NAME ==~ /^x86_64.+/ ) {
+  if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
   def iC = docker.image("${dockerAgentDockerImage}")
@@ -129,7 +125,7 @@ def doTestStep() {
 }
 
 def doPostCoverageCoberturaStep() {
-  if ( env.NODE_NAME ==~ /^x86_64.+/ ) {
+  if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
   def iC = docker.image("${dockerAgentDockerImage}")
@@ -143,7 +139,7 @@ def doPostCoverageCoberturaStep() {
 }
 
 def doPostCoverageSonarStep() {
-  if ( env.NODE_NAME ==~ /^x86_64.+/ ) {
+  if ( env.NODE_NAME.contains('x86_64') ) {
     sh "docker load -i ${JENKINS_DOCKER_IMAGE_DIR}/${dockerImageFile}"
   }
   def iC = docker.image("${dockerAgentDockerImage}")
