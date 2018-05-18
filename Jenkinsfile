@@ -89,6 +89,8 @@ pipeline {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
                 //debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
+                GIT_EMAIL = sh(script: "git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                sh "echo ${env.GIT_EMAIL}"
               }
               else {
                 def releaseBuild = load ".jenkinsci/release-build.groovy"
@@ -489,7 +491,7 @@ pipeline {
       script {
         if ( params.Linux ) {
           node ('x86_64_aws_test') {
-            sh "echo ${GIT_AUTHOR_EMAIL}"
+            sh "echo ${env.GIT_AUTHOR_EMAIL}"
             def post = load ".jenkinsci/linux-post-step.groovy"
             post.linuxPostStep()
           }
