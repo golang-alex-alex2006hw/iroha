@@ -88,9 +88,7 @@ pipeline {
               if (params.BUILD_TYPE == 'Debug') {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
-                //debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
-                GIT_EMAIL = sh(script: """echo `git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}`""", returnStdout: true).trim()
-                sh "echo ${env.GIT_EMAIL}"
+                debugBuild.doDebugBuild(coverage.selectedBranchesCoverage())
               }
               else {
                 def releaseBuild = load ".jenkinsci/release-build.groovy"
@@ -110,7 +108,7 @@ pipeline {
               if (params.BUILD_TYPE == 'Debug') {
                 def debugBuild = load ".jenkinsci/debug-build.groovy"
                 def coverage = load ".jenkinsci/selected-branches-coverage.groovy"
-                debugBuild.doDebugBuild( (!params.Linux && !params.MacOS && !params.ARMv8) ? coverage.selectedBranchesCoverage() : false )
+                // debugBuild.doDebugBuild( (!params.Linux && !params.MacOS && !params.ARMv8) ? coverage.selectedBranchesCoverage() : false )
               }
               else {
                 def releaseBuild = load ".jenkinsci/release-build.groovy"
@@ -218,7 +216,7 @@ pipeline {
           steps {
             script {
               def tests = load ".jenkinsci/debug-build.groovy"
-              //tests.doTestStep()  //TODO: pass tests list
+              // tests.doTestStep()  //TODO: pass tests list
             }
           }
         }
@@ -483,10 +481,13 @@ pipeline {
   post {
      // TODO: send email-notifications logic 
     always {
-      // emailext( subject: '$DEFAULT_SUBJECT',
-      //           body: '$DEFAULT_CONTENT',
-      //           to: "${env.GIT_AUTHOR_EMAIL}"
-      // )
+      script {
+        GIT_AUTHOR_EMAIL = sh(script: """echo `git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}`""", returnStdout: true).trim()
+      }
+      emailext( subject: '$DEFAULT_SUBJECT',
+                body: '$DEFAULT_CONTENT',
+                to: "${GIT_AUTHOR_EMAIL}"
+      )
       // clear workspace on agents and 
       script {
         if ( params.Linux ) {
