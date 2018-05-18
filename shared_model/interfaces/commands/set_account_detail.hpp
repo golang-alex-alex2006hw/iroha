@@ -18,12 +18,12 @@
 #ifndef IROHA_SHARED_MODEL_SET_ACCOUNT_DETAIL_HPP
 #define IROHA_SHARED_MODEL_SET_ACCOUNT_DETAIL_HPP
 
+#include "interfaces/base/primitive.hpp"
+#include "interfaces/common_objects/types.hpp"
+
 #ifndef DISABLE_BACKWARD
 #include "model/commands/set_account_detail.hpp"
 #endif
-
-#include "interfaces/base/primitive.hpp"
-#include "interfaces/common_objects/types.hpp"
 
 namespace shared_model {
   namespace interface {
@@ -48,14 +48,7 @@ namespace shared_model {
        */
       virtual const types::AccountDetailValueType &value() const = 0;
 
-      std::string toString() const override {
-        return detail::PrettyStringBuilder()
-            .init("SetAccountDetail")
-            .append("account_id", accountId())
-            .append("key", key())
-            .append("value", value())
-            .finalize();
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -68,10 +61,7 @@ namespace shared_model {
 
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return accountId() == rhs.accountId() and key() == rhs.key()
-            and value() == rhs.value();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
   }  // namespace interface
 }  // namespace shared_model

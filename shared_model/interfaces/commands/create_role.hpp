@@ -45,14 +45,7 @@ namespace shared_model {
        */
       virtual const PermissionsType &rolePermissions() const = 0;
 
-      std::string toString() const override {
-        auto roles_set = rolePermissions();
-        return detail::PrettyStringBuilder()
-            .init("CreateRole")
-            .append("role_name", roleName())
-            .appendAll(roles_set, [](auto &role) { return role; })
-            .finalize();
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -65,10 +58,7 @@ namespace shared_model {
 
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return roleName() == rhs.roleName()
-            and rolePermissions() == rhs.rolePermissions();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
   }  // namespace interface
 }  // namespace shared_model

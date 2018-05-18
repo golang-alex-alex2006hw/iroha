@@ -39,15 +39,9 @@ namespace shared_model {
       /**
        * @return value of a new quorum
        */
-      virtual const types::QuorumType &newQuorum() const = 0;
+      virtual types::QuorumType newQuorum() const = 0;
 
-      std::string toString() const override {
-        return detail::PrettyStringBuilder()
-            .init("SetQuorum")
-            .append("account_id", accountId())
-            .append("quorum", std::to_string(newQuorum()))
-            .finalize();
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -58,10 +52,7 @@ namespace shared_model {
       }
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return accountId() == rhs.accountId()
-            and newQuorum() == rhs.newQuorum();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
   }  // namespace interface
 }  // namespace shared_model

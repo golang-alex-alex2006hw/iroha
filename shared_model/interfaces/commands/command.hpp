@@ -87,9 +87,7 @@ namespace shared_model {
 
       // ------------------------| Primitive override |-------------------------
 
-      std::string toString() const override {
-        return boost::apply_visitor(detail::ToStringVisitor(), get());
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -98,9 +96,7 @@ namespace shared_model {
       }
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return this->get() == rhs.get();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
 
   }  // namespace interface

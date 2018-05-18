@@ -41,13 +41,7 @@ namespace shared_model {
        */
       virtual const types::PubkeyType &pubkey() const = 0;
 
-      std::string toString() const override {
-        return detail::PrettyStringBuilder()
-            .init("RemoveSignatory")
-            .append("account_id", accountId())
-            .append(pubkey().toString())
-            .finalize();
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -59,9 +53,7 @@ namespace shared_model {
 
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return accountId() == rhs.accountId() and pubkey() == rhs.pubkey();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
   }  // namespace interface
 }  // namespace shared_model

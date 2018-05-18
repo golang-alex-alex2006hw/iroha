@@ -42,13 +42,7 @@ namespace shared_model {
        */
       virtual const types::AccountIdType &accountId() const = 0;
 
-      std::string toString() const override {
-        return detail::PrettyStringBuilder()
-            .init("AddSignatory")
-            .append("pubkey", pubkey().toString())
-            .append("account_id", accountId())
-            .finalize();
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -60,9 +54,7 @@ namespace shared_model {
 
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return pubkey() == rhs.pubkey() and accountId() == rhs.accountId();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
   }  // namespace interface
 }  // namespace shared_model

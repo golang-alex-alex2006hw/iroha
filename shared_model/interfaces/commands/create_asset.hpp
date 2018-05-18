@@ -47,14 +47,7 @@ namespace shared_model {
        */
       virtual const PrecisionType &precision() const = 0;
 
-      std::string toString() const override {
-        return detail::PrettyStringBuilder()
-            .init("CreateAsset")
-            .append("asset_name", assetName())
-            .append("domain_id", domainId())
-            .append("precision", std::to_string(precision()))
-            .finalize();
-      }
+      std::string toString() const override;
 
 #ifndef DISABLE_BACKWARD
       OldModelType *makeOldModel() const override {
@@ -67,10 +60,7 @@ namespace shared_model {
 
 #endif
 
-      bool operator==(const ModelType &rhs) const override {
-        return assetName() == rhs.assetName() and domainId() == rhs.domainId()
-            and precision() == rhs.precision();
-      }
+      bool operator==(const ModelType &rhs) const override;
     };
   }  // namespace interface
 }  // namespace shared_model
