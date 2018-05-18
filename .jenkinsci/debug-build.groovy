@@ -82,7 +82,6 @@ def doDebugBuild(coverageEnabled=false) {
         sh "cmake --build build -- -j${parallelism}"
         sh "ccache --show-stats"
      }
-  }
 }
 
 def doPreCoverageStep() {
